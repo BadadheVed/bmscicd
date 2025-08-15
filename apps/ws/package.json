@@ -1,22 +1,22 @@
 {
-  "name": "http-server",
+  "name": "ws",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "devDependencies": {
+    "@repo/db": "workspace:*",
+    "@repo/typescript-config": "workspace:*"
+  },
   "scripts": {
     "build": "tsc -b",
     "dev": "npm run build && npm run start",
     "start": "node dist/index.js"
   },
-  "devDependencies": {
-    "@repo/db": "workspace:*",
-    "@repo/typescript-config": "workspace:*"
-  },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@types/express": "^5.0.3",
-    "express": "^5.1.0"
+    "@types/ws": "^8.18.1",
+    "ws": "^8.18.3"
   }
 }
