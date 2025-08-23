@@ -22,21 +22,5 @@ jobs:
             export PATH=$HOME/.nvm/versions/node/v22.18.0/bin:$PATH
             cd bmscicd/
             git pull
-
-
-            if ! command -v pnpm &> /dev/null
-            then
-              echo "📦 pnpm not found. Installing..."
-              npm install -g pnpm
-            else
-              echo "✅ pnpm already installed at $(which pnpm)"
-            fi
-
-
-            pnpm install --frozen-lockfile
-            pnpm run build
-
-
-            pm2 restart "Frontend Next"
-            pm2 restart "WebSocket"
-            pm2 restart "http-server"
+            chmod +x deploy.sh
+            ./deploy.sh
