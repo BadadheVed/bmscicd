@@ -5,17 +5,16 @@ push:
     - "main"
 
 jobs:
-redeploy_everything:
-  name: Deploying everything to Staging
-
-  steps:
-    - name: SSH into the Prod EC2 Instance
-    - run: |
-        echo ${{secrets.ID_RSA}} &> ~/ssh_key
-        ssh -i ~/ssh_key ubuntu@13.234.35.69
-        cd bmscicd/ && git pull
-        pnpm install
-        pnpm run build 
-        pm2 restart Frontend Next
-        pm2 restart WebSocket
-        pm2 restart http-server
+  redeploy_everything:
+    runs-on: ubuntu-latest
+    name: Deploying everything to Staging
+    steps:
+      - run: |
+          echo "${{secrets.ID_RSA}}" &> ~/ssh_key
+          ssh -i ~/ssh_key ubuntu@13.234.35.69
+          cd bmscicd/ && git pull
+          pnpm install
+          pnpm run build 
+          pm2 restart "Frontend Next"
+          pm2 restart "WebSocket"
+          pm2 restart "http-server"
