@@ -6,7 +6,6 @@ export default async function Home() {
     <div>
       emails is {user?.email}
       password is {user?.password}
-      hello there this is updated by the CI/CD pipeline hello user how ar eyou
     </div>
   );
 }
