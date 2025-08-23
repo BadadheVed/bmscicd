@@ -1,0 +1,29 @@
+name: Deploy to Production
+
+on:
+  pull_request:
+    branches:
+      - "production"
+    types:
+      - closed
+
+jobs:
+  redeploy_production:
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+    name: Deploying Production
+    steps:
+      - name: Deploy over SSH with Appleboy
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: 13.234.38.2
+          username: ubuntu
+          key: ${{ secrets.ID_RSA }}
+          passphrase: ${{ secrets.ID_RSA_PASSPHRASE }}
+          port: 22
+          script: |
+            export PATH=$HOME/.nvm/versions/node/v22.18.0/bin:$PATH 
+            cd bmscicd/
+            git pull
+            chmod +x deploy.sh
+            ./deploy.sh
