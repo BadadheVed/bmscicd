@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     name: Deploying everything to Staging
     steps:
-      - name: 🚀 Deploy over SSH with Appleboy
+      - name: Deploy over SSH with Appleboy
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: 13.234.35.69
