@@ -1,4 +1,5 @@
 name: Pushing to the Dev Staging Branch
+
 on:
   push:
     branches:
@@ -10,11 +11,13 @@ jobs:
     name: Deploying everything to Staging
     steps:
       - run: |
-          echo "${{secrets.ID_RSA}}" &> ~/ssh_key
-          ssh -i ~/ssh_key ubuntu@13.234.35.69
-          cd bmscicd/ && git pull
-          pnpm install
-          pnpm run build 
-          pm2 restart "Frontend Next"
-          pm2 restart "WebSocket"
-          pm2 restart "http-server"
+          echo "${{secrets.ID_RSA}}" > ~/ssh_key
+          chmod 600 ~/ssh_key
+          ssh -o StrictHostKeyChecking=no -i ~/ssh_key ubuntu@13.234.35.69 << 'EOF'
+            cd bmscicd/ && git pull
+            pnpm install
+            pnpm run build
+            pm2 restart "Frontend Next"
+            pm2 restart "WebSocket"
+            pm2 restart "http-server"
+          EOF
