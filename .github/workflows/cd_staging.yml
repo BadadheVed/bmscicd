@@ -10,14 +10,19 @@ jobs:
     runs-on: ubuntu-latest
     name: Deploying everything to Staging
     steps:
-      - run: |
-          echo "${{secrets.ID_RSA}}" > ~/ssh_key
-          chmod 600 ~/ssh_key
-          ssh -o StrictHostKeyChecking=no -i ~/ssh_key ubuntu@13.234.35.69 << 'EOF'
-            cd bmscicd/ && git pull
-            pnpm install
+      - name: 🚀 Deploy over SSH with Appleboy
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: 13.234.35.69
+          username: ubuntu
+          key: ${{ secrets.ID_RSA }}
+          passphrase: ${{secrets.ID_RSA_PASSPHRASE}}
+          port: 22
+          script: |
+            cd bmscicd/
+            git pull
+            pnpm install --frozen-lockfile
             pnpm run build
             pm2 restart "Frontend Next"
             pm2 restart "WebSocket"
             pm2 restart "http-server"
-          EOF
